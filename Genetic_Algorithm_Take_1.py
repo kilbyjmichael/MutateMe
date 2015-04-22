@@ -80,9 +80,9 @@ def main():
                 pair = (individual, fitness_num)
             
             weighted_population.append(pair)
-        print "Generation %s... Random sample: %s" % (generation, weighted_population[0])
+        print("Generation %s... Random sample: %s" % (generation, weighted_population[0]))
     
-        for _ in xrange(int(POP_SIZE*.2)):
+        for _ in range(int(POP_SIZE*.2)):
           # Selection
           person1 = weighted_choice(weighted_population)
           person2 = weighted_choice(weighted_population)
