@@ -43,7 +43,7 @@ def fitness(dna):
 def mate(mother, father):
     zygote = list(zip(mother, father))
     child = ''
-    for dna in child:
+    for dna in zygote:
         if dna[0] == dna[1]:
             child += dna[0]
         else:
@@ -81,6 +81,8 @@ def main():
             
             weighted_population.append(pair)
         print("Generation %s... Random sample: %s" % (generation, weighted_population[0]))
+
+        population = []
     
         for _ in range(int(POP_SIZE*.2)):
           # Selection
