@@ -14,7 +14,7 @@ def random_char():
   
 def make_population():
     # Returns a list of POP_SIZE strings.
-    population = ['''list''']
+    population = []
     for x in range(POP_SIZE):
         dna = ''
         for char in range(DNA_SIZE):
@@ -29,6 +29,7 @@ def mutate(dna_sample):
         if int(random.random()*(MUTATE_CHANCE[1]/MUTATE_CHANCE[0])) == 1:
             dna += random_char()
         else:
+            print dna_sample[char]
             dna += dna_sample[char]
     return dna
 
@@ -83,17 +84,18 @@ def main():
         
         population = [] # Empty the houses for the kids
     
-    for _ in xrange(POP_SIZE*.2):
-      # Selection
-      person1 = weighted_choice(weighted_population)
-      person2 = weighted_choice(weighted_population)
- 
-      # Crossover
-      person1, person2 = crossover(person1, person2)
- 
-      # Mutate and add back into the population.
-      population.append(mutate(person1))
-      population.append(mutate(person2))
+        for _ in xrange(int(POP_SIZE*.2)):
+          # Selection
+          person1 = weighted_choice(weighted_population)
+          person2 = weighted_choice(weighted_population)
+     
+          # Crossover
+          kid1 = mate(person1, person2)
+          kid2 = mate(person1, person2)
+     
+          # Mutate and add back into the population.
+          population.append(mutate(kid1))
+          population.append(mutate(kid2))
       
     fittest_string = population[0]
     minimum_fitness = fitness(population[0])
