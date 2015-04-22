@@ -36,8 +36,8 @@ def mutate(dna_sample):
 def fitness(dna):
     # Calculate the difference between a character in the same position in the TARGET string.
     fitness = 0
-    for char in dna:
-        fitness += abs(ord(char) - ord(TARGET[ord(char)]))
+    for i in range(DNA_SIZE):
+        fitness += abs(ord(dna[i]) - ord(TARGET[i]))
     return fitness
   
 def mate(mother, father):
@@ -81,8 +81,6 @@ def main():
             
             weighted_population.append(pair)
         print "Generation %s... Random sample: %s" % (generation, weighted_population[0])
-        
-        population = [] # Empty the houses for the kids
     
         for _ in xrange(int(POP_SIZE*.2)):
           # Selection
@@ -91,11 +89,11 @@ def main():
      
           # Crossover
           kid1 = mate(person1, person2)
-          kid2 = mate(person1, person2)
      
           # Mutate and add back into the population.
           population.append(mutate(kid1))
-          population.append(mutate(kid2))
+
+          # population = [] # Empty the houses for the kids
       
     fittest_string = population[0]
     minimum_fitness = fitness(population[0])
