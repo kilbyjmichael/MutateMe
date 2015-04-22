@@ -2,7 +2,7 @@
 
 import random
 
-TARGET     = "Michael Kilby"
+TARGET      = "Michael Kilby"
 DNA_SIZE    = len(TARGET)
 POP_SIZE    = 100
 GENERATIONS = 1000
@@ -23,21 +23,21 @@ def make_population():
     return population
 
 def mutate(dna_sample):
+    dna_sample = str(dna_sample)
     # Use MUTATE_CHANCE to create randomness in population
     dna = ''
-    for char in range(DNA_SIZE):
+    for char in dna_sample:
         if int(random.random()*(MUTATE_CHANCE[1]/MUTATE_CHANCE[0])) == 1:
             dna += random_char()
         else:
-            print dna_sample[char]
-            dna += dna_sample[char]
+            dna += char
     return dna
 
 def fitness(dna):
     # Calculate the difference between a character in the same position in the TARGET string.
     fitness = 0
-    for c in range(DNA_SIZE):
-        fitness += abs(ord(dna[c]) - ord(TARGET[c]))
+    for char in dna:
+        fitness += abs(ord(char) - ord(TARGET[ord(char)]))
     return fitness
   
 def mate(mother, father):
@@ -74,13 +74,13 @@ def main():
         for individual in population:
             fitness_num = fitness(individual)
         
-        if fitness_num == 0:
-            pair = (individual, 1)
-        else:
-            pair = (individual, fitness_num)
-        
-        weighted_population.append(pair)
-        print("Generation %s... Random sample: '%s'" % (generation, weighted_population[0]))
+            if fitness_num == 0:
+                pair = (individual, 1)
+            else:
+                pair = (individual, fitness_num)
+            
+            weighted_population.append(pair)
+        print "Generation %s... Random sample: %s" % (generation, weighted_population[0])
         
         population = [] # Empty the houses for the kids
     
