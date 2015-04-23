@@ -2,10 +2,10 @@
 
 import random
 
-TARGET      = "Michael Kilby"
+TARGET      = "Kilby"
 DNA_SIZE    = len(TARGET)
-POP_SIZE    = 100
-GENERATIONS = 1000
+POP_SIZE    = 200
+GENERATIONS = 10000
 MUTATE_CHANCE = [1,100] # 1 in 100
 
 def random_char():
@@ -44,10 +44,7 @@ def mate(mother, father):
     zygote = list(zip(mother, father))
     child = ''
     for dna in zygote:
-        if dna[0] == dna[1]:
-            child += dna[0]
-        else:
-            child += dna[random.randrange(2)]
+        child += dna[random.randrange(2)]
     return child
 
 def weighted_choice(items):
@@ -70,7 +67,8 @@ def main():
     
     for generation in range(GENERATIONS):
         weighted_population = []
-       
+
+        # copy from pop to wpop
         for individual in population:
             fitness_num = fitness(individual)
         
@@ -82,20 +80,25 @@ def main():
             weighted_population.append(pair)
         print("Generation %s... Random sample: %s" % (generation, weighted_population[0]))
 
-        population = []
-    
-        for _ in range(int(POP_SIZE*.2)):
+        population = [] # Empty the houses for the kids
+
+        # fill pop back up by mating all of them
+        for _ in range(int(POP_SIZE/2)):
           # Selection
           person1 = weighted_choice(weighted_population)
           person2 = weighted_choice(weighted_population)
+          person3 = weighted_choice(weighted_population)
+          person4 = weighted_choice(weighted_population)
      
           # Crossover
           kid1 = mate(person1, person2)
-     
+          kid2 = mate(person3, person4)
           # Mutate and add back into the population.
           population.append(mutate(kid1))
-
-          # population = [] # Empty the houses for the kids
+          population.append(mutate(kid2))
+          #print (person1)
+          #print (person2 + ":")
+          #print (kid + "\n")
       
     fittest_string = population[0]
     minimum_fitness = fitness(population[0])
