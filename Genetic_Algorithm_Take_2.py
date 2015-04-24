@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-'''Uses a basic Genitic Algorithm to find a string'''
+'''Uses a basic Genitic Algorithm to find a string,
+but this time includes the number of children parents will have'''
 
 import random
 
@@ -8,6 +9,7 @@ TARGET      = "Michael Kilby"
 DNA_SIZE    = len(TARGET)
 POP_SIZE    = 200
 GENERATIONS = 500
+KINDER_NUM  = 4
 MUTATE_CHANCE = [1,200] # 1 in 100
 
 def random_char():
@@ -98,17 +100,16 @@ def main():
 
         population = [] # Empty the houses for the kids
 
-        # fill pop back up by mating all of them
-        for _ in range(int(POP_SIZE/2)):
-          # Selection
-          person1 = weighted_choice(weighted_population)
-          person2 = weighted_choice(weighted_population)
-
-          # Mate
-          kid1 = mate(person1, person2)
-
-          # Mutate and add back into the population.
-          population.append(mutate(kid1))
+        # Now parents can have 4 kids
+        for _ in range(int(POP_SIZE/KINDER_NUM)):
+            # Selection
+            for kid in range(KINDER_NUM):
+                person1 = weighted_choice(weighted_population)
+                person2 = weighted_choice(weighted_population)
+                # Mate
+                kid = mate(person1, person2)
+                # Mutate and add back into the population.
+                population.append(mutate(kid))
 
     # If no other is found:
     print("TARGET not found:")
