@@ -4,9 +4,9 @@ import random
 
 TARGET      = "Michael Kilby"
 DNA_SIZE    = len(TARGET)
-POP_SIZE    = 1000
-GENERATIONS = 1000
-MUTATE_CHANCE = [1,100] # 1 in 100
+POP_SIZE    = 300
+GENERATIONS = 100
+MUTATE_CHANCE = [1,200] # 1 in 100
 
 def random_char():
   # Return a random character between ASCII 32 and 126
@@ -69,6 +69,7 @@ def weighted_choice(items):
 def main():
     # Make an initial population
     population = make_population()
+    fittest_fitness = 0
 
     for generation in range(GENERATIONS):
         weighted_population = []
@@ -79,12 +80,24 @@ def main():
             pair = (individual, fitness_num)
             weighted_population.append(pair)
 
-        print("Generation %s... Random sample: %s" % (generation, weighted_population[0]))
+        pos_winner, score = weighted_population[0]
+
+        # To deal with not fidning one:
+        if score >= fittest_fitness:
+            fittest_fitness = score
+            almost_fit = pos_winner
+
+        # To check for a winner and stop:
+        if score is 100:
+            print("TARGET found in Gen %s:  %s" % (generation, pos_winner))
+            quit(0)
+        else:
+            print("Generation %s... Random sample: %s : %s" % (generation, pos_winner, score))
 
         population = [] # Empty the houses for the kids
 
         # fill pop back up by mating all of them
-        for _ in range(int(POP_SIZE)):
+        for _ in range(int(POP_SIZE/2)):
           # Selection
           person1 = weighted_choice(weighted_population)
           person2 = weighted_choice(weighted_population)
@@ -101,14 +114,11 @@ def main():
           #print (person2 + ":")
           #print (kid + "\n")
 
-    fittest_string = population[0]
-    minimum_fitness = fitness(population[0])
+          fittest_string = population[0]
+          minimum_fitness = fitness(population[0])
 
-    for individual in population:
-        ind_fitness = fitness(individual)
-        if ind_fitness <= minimum_fitness:
-            fittest_string = individual
-            minimum_fitness = ind_fitness
-    print("Fittest String: %s" % fittest_string)
+    # If no other is found:
+    print("TARGET not found:")
+    print("Fittest String: %s at a fitness of %s" % (almost_fit, fittest_fitness))
 
 if __name__ == "__main__": main()
